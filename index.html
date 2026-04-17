@@ -3,6 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustLens - Digital Threat Detection Engine</title>
+    <meta name="description" content="Advanced AI-powered digital trust analysis and manipulation detection for emails, URLs, and messages.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-grid"></div>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🛡️</div>
+                    <div class="logo-text">
+                        <h1>TrustLens</h1>
+                        <p class="tagline">AI-Powered Trust Analysis</p>
+                    </div>
+                </div>
+                <p class="header-description">Detect manipulation, scams, and phishing threats in real-time</p>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section glass-panel">
+            <div class="input-wrapper">
+                <div class="input-header">
+                    <label for="trustInput" class="input-label">🔍 Analyze Content</label>
+                    <span id="charCount" class="char-counter">0/500</span>
+                </div>
+                
+                <textarea 
+                    id="trustInput" 
+                    class="input-textarea"
+                    placeholder="Paste a URL, email, message, or suspicious text here..."
+                    rows="5"
+                    maxlength="500"
+                ></textarea>
+
+                <div class="input-footer">
+                    <div class="input-tips">
+                        <span>💡 Press <kbd>Ctrl+Enter</kbd> to analyze quickly</span>
+                    </div>
+                </div>
+
+                <button id="analyzeBtn" class="btn btn-primary btn-lg">
+                    <span class="btn-icon">🔍</span>
+                    <span class="btn-text">Analyze Now</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section glass-panel hidden">
+            
+            <!-- Score Display -->
+            <div class="score-display">
+                <div class="score-circle">
+                    <svg class="score-svg" viewBox="0 0 120 120">
+                        <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00d9ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="score-bg" cx="60" cy="60" r="54"></circle>
+                        <circle id="scoreProgress" class="score-progress" cx="60" cy="60" r="54"></circle>
+                    </svg>
+                    <div class="score-center">
+                        <div class="score-value" id="scoreValue">0</div>
+                        <div class="score-label">Trust Score</div>
+                    </div>
+                </div>
+
+                <div class="risk-info">
+                    <div class="risk-badge" id="riskLevel">Safe</div>
+                    <div id="insightLine" class="insight-text hidden"></div>
+                </div>
+            </div>
+
+            <!-- Analysis Grid -->
+            <div class="analysis-grid">
+                <!-- Tactics Section -->
+                <div class="grid-item">
+                    <div class="grid-header">
+                        <h3>🎭 Detected Tactics</h3>
+                    </div>
+                    <div id="tacticsList" class="tactics-container">
+                        <span class="no-tactics">✓ None Detected</span>
+                    </div>
+                </div>
+
+                <!-- Risk Breakdown -->
+                <div class="grid-item">
+                    <div class="grid-header">
+                        <h3>📊 Risk Breakdown</h3>
+                    </div>
+                    <div class="breakdown-list">
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Content Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="contentRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Link Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="linkRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Intent Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="intentRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="explanation-section">
+                <h3>🔬 Analysis Report</h3>
+                <p id="explanationText">No analysis available yet.</p>
+            </div>
+
+            <!-- Safety Recommendation -->
+            <div class="recommendation-section">
+                <h3>⚠️ Safety Recommendation</h3>
+                <p id="safetyTip">Analyze content to receive personalized safety recommendations.</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="copyBtn" class="btn btn-secondary">
+                    <span>📋</span> Copy Report
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <span>🔄</span> Clear
+                </button>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="historySection" class="history-section glass-panel hidden">
+            <h3>📜 Recent Analyses</h3>
+            <div id="historyList" class="history-list">
+                <!-- History items inserted here -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🛡️ TrustLens • Advanced Digital Trust Analysis</p>
+            <p class="footer-small">Protecting you from manipulation and scams • No data stored on servers</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustLens - Digital Threat Detection Engine</title>
+    <meta name="description" content="Advanced AI-powered digital trust analysis and manipulation detection for emails, URLs, and messages.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-grid"></div>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🛡️</div>
+                    <div class="logo-text">
+                        <h1>TrustLens</h1>
+                        <p class="tagline">AI-Powered Trust Analysis</p>
+                    </div>
+                </div>
+                <p class="header-description">Detect manipulation, scams, and phishing threats in real-time</p>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section glass-panel">
+            <div class="input-wrapper">
+                <div class="input-header">
+                    <label for="trustInput" class="input-label">🔍 Analyze Content</label>
+                    <span id="charCount" class="char-counter">0/500</span>
+                </div>
+                
+                <textarea 
+                    id="trustInput" 
+                    class="input-textarea"
+                    placeholder="Paste a URL, email, message, or suspicious text here... Examples:&#10;• https://secure-amazon-verify.com/login&#10;• 'URGENT: Confirm password now or account locked!'&#10;• 'Congratulations! You won $1,000,000!"
+                    rows="5"
+                    maxlength="500"
+                ></textarea>
+
+                <div class="input-footer">
+                    <div class="input-tips">
+                        <span>💡 Tip: Press <kbd>Ctrl+Enter</kbd> to analyze quickly</span>
+                    </div>
+                </div>
+
+                <button id="analyzeBtn" class="btn btn-primary btn-lg">
+                    <span class="btn-icon">🔍</span>
+                    <span class="btn-text">Analyze Now</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section glass-panel hidden">
+            
+            <!-- Score Display -->
+            <div class="score-display">
+                <div class="score-circle">
+                    <svg class="score-svg" viewBox="0 0 120 120">
+                        <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00d9ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="score-bg" cx="60" cy="60" r="54"></circle>
+                        <circle id="scoreProgress" class="score-progress" cx="60" cy="60" r="54"></circle>
+                    </svg>
+                    <div class="score-center">
+                        <div class="score-value" id="scoreValue">0</div>
+                        <div class="score-label">Trust Score</div>
+                    </div>
+                </div>
+
+                <div class="risk-info">
+                    <div class="risk-badge" id="riskLevel">Safe</div>
+                    <div id="insightLine" class="insight-text hidden"></div>
+                </div>
+            </div>
+
+            <!-- Analysis Grid -->
+            <div class="analysis-grid">
+                <!-- Tactics Section -->
+                <div class="grid-item">
+                    <div class="grid-header">
+                        <h3>🎭 Detected Tactics</h3>
+                    </div>
+                    <div id="tacticsList" class="tactics-container">
+                        <span class="no-tactics">✓ None Detected</span>
+                    </div>
+                </div>
+
+                <!-- Risk Breakdown -->
+                <div class="grid-item">
+                    <div class="grid-header">
+                        <h3>📊 Risk Breakdown</h3>
+                    </div>
+                    <div class="breakdown-list">
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Content Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="contentRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Link Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="linkRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-header">
+                                <span>Intent Risk</span>
+                                <span class="breakdown-value">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="intentRiskBar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="explanation-section">
+                <h3>🔬 Analysis Report</h3>
+                <p id="explanationText">No analysis available yet.</p>
+            </div>
+
+            <!-- Safety Recommendation -->
+            <div class="recommendation-section">
+                <h3>⚠️ Safety Recommendation</h3>
+                <p id="safetyTip">Analyze content to receive personalized safety recommendations.</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="copyBtn" class="btn btn-secondary">
+                    <span>📋</span> Copy Report
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <span>🔄</span> Clear
+                </button>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="historySection" class="history-section glass-panel hidden">
+            <h3>📜 Recent Analyses</h3>
+            <div id="historyList" class="history-list">
+                <!-- History items inserted here -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🛡️ TrustLens • Advanced Digital Trust Analysis</p>
+            <p class="footer-small">Protecting you from manipulation and scams • No data stored on servers</p>
+        </footer>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrustLens – Digital Trust Engine</title>
     <meta name="description" content="Professional-grade digital trust analysis and manipulation detection.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
