@@ -26,10 +26,18 @@
 
         <section class="analyzer-card glass">
             <div class="input-group">
-                <textarea id="trustInput" placeholder="Enter URL or content for behavioral analysis..." rows="4"></textarea>
+                <div class="input-header">
+                    <label for="trustInput">Analyze Content</label>
+                    <span id="charCount" class="char-count">0/500</span>
+                </div>
+                <textarea id="trustInput" placeholder="Paste URL, email, message, or suspicious content here..." rows="4" maxlength="500"></textarea>
                 <div class="btn-row">
-                    <button id="analyzeBtn" class="primary-btn">Execute Engine Analysis</button>
-                    <button id="demoBtn" class="secondary-btn">Try Demo Attack</button>
+                    <button id="analyzeBtn" class="primary-btn">
+                        <span>🔍 Analyze Now</span>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <small>Tip: Ctrl+Enter to analyze quickly</small>
                 </div>
             </div>
         </section>
@@ -81,8 +89,42 @@
             </div>
             
             <div class="tips-box">
-                <h4>Safety Recommendation:</h4>
+                <h4>🛡️ Safety Recommendation:</h4>
                 <p id="safetyTip">Always verify sources before sharing personal information.</p>
+            </div>
+
+            <div class="action-buttons">
+                <button id="copyBtn" class="action-btn">📋 Copy Report</button>
+                <button id="clearBtn" class="action-btn">🔄 Clear</button>
+            </div>
+        </section>
+
+        <section id="historySection" class="history-card glass hidden">
+            <h3>📊 Recent Analyses</h3>
+            <div id="historyList" class="history-list">
+                <p class="empty-history">No analyses yet</p>
+            </div>
+        </section>
+
+        <section class="tips-section glass">
+            <h3>💡 How TrustLens Works</h3>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">🧠</span>
+                    <p><strong>Psychological Analysis:</strong> Identifies manipulation tactics like false urgency and reward baiting.</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🔗</span>
+                    <p><strong>Link Intelligence:</strong> Detects URL spoofing, shorteners, and obfuscation techniques.</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🎯</span>
+                    <p><strong>Intent Mapping:</strong> Analyzes behavioral triggers and call-to-action patterns.</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">⚡</span>
+                    <p><strong>Real-time Scoring:</strong> Dynamic 0-100 trust scoring based on behavioral heuristics.</p>
+                </div>
             </div>
         </section>
     </main>
